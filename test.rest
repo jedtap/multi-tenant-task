@@ -56,3 +56,71 @@ Content-Type: application/json
 {}
 
 ###
+
+
+# *** CRUD capabilities for Project ***
+GET http://127.0.0.1:8000/projects/ 
+Content-Type: application/json
+
+{}
+
+###
+
+POST http://127.0.0.1:8000/projects/
+Content-Type: application/json
+
+{ "tenant": 2, "users": [2], "name": "Launch New Business" }
+
+###
+
+PATCH http://127.0.0.1:8000/project/1/
+Content-Type: application/json
+
+{ "name": "Artwork" }
+
+###
+
+DELETE http://127.0.0.1:8000/project/1/
+Content-Type: application/json
+
+{}
+
+###
+
+# *** CRUD capabilities for Task ***
+GET http://127.0.0.1:8000/tasks/
+Content-Type: application/json
+
+{}
+
+###
+
+POST http://127.0.0.1:8000/tasks/
+Content-Type: application/json
+
+{
+    "tenant": 2,
+    "users": [2],
+    "project": 2,
+    "title": "Market research",
+    "description": "Loreum Ipusm"
+}
+
+###
+
+
+PATCH http://127.0.0.1:8000/tasks/1/
+Content-Type: application/json
+
+{
+    "title": "RACI matrix",
+    "description": "Loreum Ipusm Loreum Ipusm"
+}
+
+###
+
+
+DELETE http://127.0.0.1:8000/tasks/1/
+Content-Type: application/json
+
+{}

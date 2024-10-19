@@ -6,8 +6,12 @@ from rest_framework.decorators import api_view
 from rest_framework.views import APIView
 from django.contrib.auth.hashers import make_password
 
-from core.models import Tenant, CustomUser
-from .serializers import TenantSerializer, UserSerializer
+from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
+
+from rest_framework import viewsets
+
+from core.models import Tenant, CustomUser, Project, Task
+from .serializers import TenantSerializer, UserSerializer, ProjectSerializer, TaskSerializer
 
 
 # Function base view for Tenant model
@@ -103,3 +107,19 @@ class UserUpdateDeleteView(APIView):
         user = CustomUser.objects.get(pk=pk)
         user.delete()
         return Response({'message': 'User was deleted'})
+
+
+# Generic API view for Project model
+class ProjectListCreateView(ListCreateAPIView):
+	queryset = Project.objects.all()
+	serializer_class = ProjectSerializer
+
+class ProjectRetrieveUpdateDestroyView(RetrieveUpdateDestroyAPIView):
+    queryset = Project.objects.all()
+    serializer_class = ProjectSerializer
+
+
+# View set for Task model
+class TaskViewSet(viewsets.ModelViewSet):
+	queryset = Task.objects.all()
+	serializer_class = TaskSerializer
