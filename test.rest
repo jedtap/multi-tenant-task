@@ -1,0 +1,30 @@
+# *** CRUD capabilities for Tenant ***
+GET http://127.0.0.1:8000/tenants/ 
+Content-Type: application/json
+
+{}
+
+###
+
+POST http://127.0.0.1:8000/tenant/new/
+Content-Type: application/json
+
+{ "name": "diamond.com" }
+
+###
+
+PUT http://127.0.0.1:8000/tenant/1/ 
+Content-Type: application/json
+
+{"name": "crazy.com"}
+
+###
+
+DELETE http://127.0.0.1:8000/tenant/delete/1/ 
+Content-Type: application/json
+
+{}
+
+###
+
+
