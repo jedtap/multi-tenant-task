@@ -33,3 +33,5 @@ htmlcov/
 # Temporary files
 *.tmp
 *.bak
+
+todo.txt
