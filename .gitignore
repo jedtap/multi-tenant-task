@@ -1,0 +1,35 @@
+# Django
+*.log
+*.pot
+*.pyc
+__pycache__/
+db.sqlite3
+media/
+
+# Environments
+.env
+.venv
+env/
+venv/
+
+# IDEs
+.vscode/
+.idea/
+
+# Build
+build/
+dist/
+*.egg-info/
+*.whl
+
+# Testing
+.coverage
+coverage.xml
+htmlcov/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Temporary files
+*.tmp
+*.bak
