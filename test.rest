@@ -9,14 +9,14 @@ Content-Type: application/json
 POST http://127.0.0.1:8000/tenant/new/
 Content-Type: application/json
 
-{ "name": "diamond.com" }
+{ "name": "boom.com" }
 
 ###
 
-PUT http://127.0.0.1:8000/tenant/1/ 
+PUT http://127.0.0.1:8000/tenant/2/ 
 Content-Type: application/json
 
-{"name": "crazy.com"}
+{"name": "bob.com"}
 
 ###
 
@@ -28,3 +28,31 @@ Content-Type: application/json
 ###
 
 
+# *** CRUD capabilities for User ***
+GET http://127.0.0.1:8000/users/ 
+Content-Type: application/json
+
+{}
+
+###
+
+POST http://127.0.0.1:8000/users/
+Content-Type: application/json
+
+{"name": "Mister Jed", "email": "hello@jed.com", "password": "MagicPassword1234!"}
+
+###
+
+PUT http://127.0.0.1:8000/user/1/
+Content-Type: application/json
+
+{"name": "I am candy"}
+
+###
+
+DELETE  http://127.0.0.1:8000/user/1/
+Content-Type: application/json
+
+{}
+
+###
