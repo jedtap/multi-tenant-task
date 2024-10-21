@@ -20,4 +20,7 @@ urlpatterns = [
     path('project/<int:pk>/', views.ProjectRetrieveUpdateDestroyView.as_view()),
 
     path('',include(router.urls)),
+
+    path('login/', views.login),
+    path('logout/', views.logout),
 ]

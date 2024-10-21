@@ -9,7 +9,7 @@ class TenantSerializer(serializers.ModelSerializer):
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = CustomUser
-        fields = ['id', 'name', 'email', 'password', 'is_admin', 'tenant']
+        fields = ['id', 'name', 'email', 'password', 'is_staff', 'is_admin', 'tenant']
 
 class ProjectSerializer(serializers.ModelSerializer):
     class Meta:

@@ -1,6 +1,25 @@
-# *** CRUD capabilities for Tenant ***
+# *** LOGIN and LOGTOUT ***********************************************
+POST http://127.0.0.1:8000/login/ 
+Content-Type: application/json
+
+{ "email": "hello@jed.com", "password": "MagicPassword1234!"}
+
+###
+
+POST http://127.0.0.1:8000/logout/ 
+Content-Type: application/json
+Authorization: Token abcd
+X-CSRFToken: abcd
+
+{}
+
+###
+
+# *** CRUD capabilities for Tenant ***********************************************
 GET http://127.0.0.1:8000/tenants/ 
 Content-Type: application/json
+Authorization: Token abcd
+X-CSRFToken: abcd
 
 {}
 
@@ -28,7 +47,7 @@ Content-Type: application/json
 ###
 
 
-# *** CRUD capabilities for User ***
+# *** CRUD capabilities for User ***********************************************
 GET http://127.0.0.1:8000/users/ 
 Content-Type: application/json
 
@@ -43,10 +62,10 @@ Content-Type: application/json
 
 ###
 
-PUT http://127.0.0.1:8000/user/1/
+PUT http://127.0.0.1:8000/user/2/
 Content-Type: application/json
 
-{"name": "I am candy"}
+{"is_admin": true}
 
 ###
 
@@ -58,7 +77,7 @@ Content-Type: application/json
 ###
 
 
-# *** CRUD capabilities for Project ***
+# *** CRUD capabilities for Project ***********************************************
 GET http://127.0.0.1:8000/projects/ 
 Content-Type: application/json
 
@@ -87,7 +106,7 @@ Content-Type: application/json
 
 ###
 
-# *** CRUD capabilities for Task ***
+# *** CRUD capabilities for Task ***********************************************
 GET http://127.0.0.1:8000/tasks/
 Content-Type: application/json
 
@@ -124,3 +143,5 @@ DELETE http://127.0.0.1:8000/tasks/1/
 Content-Type: application/json
 
 {}
+
+###

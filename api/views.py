@@ -10,8 +10,42 @@ from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIV
 
 from rest_framework import viewsets
 
+from django.contrib.auth import authenticate, login as django_login, logout as django_logout
+from django.middleware.csrf import get_token
+from rest_framework.authtoken.models import Token
+
+from rest_framework.authentication import SessionAuthentication, TokenAuthentication
+from rest_framework.permissions import IsAuthenticated, IsAdminUser
+from rest_framework.decorators import authentication_classes, permission_classes
+
 from core.models import Tenant, CustomUser, Project, Task
 from .serializers import TenantSerializer, UserSerializer, ProjectSerializer, TaskSerializer
+
+
+# Login and Logout
+@api_view(['POST'])
+def login(request):
+    email = request.data.get('email')
+    password = request.data.get('password')
+    user = authenticate(email=email, password=password)
+
+    if user:
+        token, created = Token.objects.get_or_create(user=user)
+        django_login(request, user)
+        csrf_token = get_token(request)
+        return Response({'token': token.key, 'user': user.email, 'csrf_token': csrf_token})
+    else:
+        return Response("oops, user and/or password is not valid", status=status.HTTP_404_NOT_FOUND)
+
+@api_view(['POST'])
+def logout(request):
+    try:
+        token = Token.objects.get(user=request.user)
+        token.delete()
+        django_logout(request) 
+    except Token.DoesNotExist:
+        return Response({"error": "oops, your not logged in"}, status=status.HTTP_400_BAD_REQUEST)
+    return Response({"message": "Successfully logged out"}, status=status.HTTP_200_OK)
 
 
 # Function base view for Tenant model
@@ -24,10 +58,15 @@ def create_tenant(request):
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['GET'])
+@authentication_classes([SessionAuthentication, TokenAuthentication])
+@permission_classes([IsAuthenticated, IsAdminUser])
 def view_tenants(request):
-    tenants = Tenant.objects.all()
-    serializer = TenantSerializer(tenants, many=True)
-    return Response(serializer.data)
+    if request.user.is_admin:
+        tenants = Tenant.objects.all()
+        serializer = TenantSerializer(tenants, many=True)
+        return Response(serializer.data)
+    else:
+        return Response({"error": "oops, your not an admin to see this"}, status=status.HTTP_401_UNAUTHORIZED)
 
 @api_view(['PUT'])
 def edit_tenant(request, pk):
