@@ -100,9 +100,15 @@ def delete_tenant(request, pk):
 
 # Class based view for User model
 class UserListCreateView(APIView):
+    authentication_classes = [SessionAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated, IsAdminUser]
 
     def get(self, request):
-        users = CustomUser.objects.all()
+        if request.user.is_admin:
+            users = CustomUser.objects.all()
+        else:
+            users = CustomUser.objects.filter(tenant=request.user.tenant)
+
         serializer = UserSerializer(users, many=True)
         return Response(serializer.data)
 
@@ -128,8 +134,17 @@ class UserListCreateView(APIView):
         return Response(user_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class UserUpdateDeleteView(APIView):
-    
+    authentication_classes = [SessionAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+
     def put(self, request, pk):
+        if request.user.is_admin:
+            pass
+        elif pk == request.user.id:
+            pass
+        else:
+            return Response({"error": "Unauthorized to make changes"}, status=status.HTTP_401_UNAUTHORIZED)
+ 
         user = CustomUser.objects.get(pk=pk)
         password = request.data.get('password', None)
         email = request.data.get('email', None)
@@ -158,6 +173,9 @@ class UserUpdateDeleteView(APIView):
         return Response(user_serializer.data) 
 
     def delete(self, request, pk):
+        if not request.user.is_admin:
+            return Response({"error": "Unauthorized to delete a user"}, status=status.HTTP_401_UNAUTHORIZED)
+ 
         user = CustomUser.objects.get(pk=pk)
         user.delete()
         return Response({'message': 'User was deleted'})

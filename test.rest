@@ -10,11 +10,10 @@
 
 
 ###
-@email = "johndoe@company.com"
-@password = "I Love Burgers!"
-# @authToken = a0e3c7b10fc3a0a10145a4a1eafc65c3b0611fe6
+@email = "clear@dave.com"
+@password = "CleanTables1234!"
 @authToken = {{login.response.headers.X-AuthToken}}
-@CSRFToken = jlJK6Po9187Bwxd005helvpYbkmAZr04IEQCcsUhpwmFiI4zbXT7pHhAu2X79aoM
+@CSRFToken = abcde
 @baseURL = http://127.0.0.1:8000/
 
 ###
@@ -77,6 +76,8 @@ X-CSRFToken: {{CSRFToken}}
 # *** CRUD capabilities for User ***********************************************
 GET {{baseURL}}users/ 
 Content-Type: application/json
+Authorization: {{authToken}}
+X-CSRFToken: {{CSRFToken}}
 
 {}
 
@@ -84,20 +85,26 @@ Content-Type: application/json
 
 POST {{baseURL}}users/
 Content-Type: application/json
+Authorization: {{authToken}}
+X-CSRFToken: {{CSRFToken}}
 
-{"name": "test", "email": "test@test.com", "password": "test"}
+{"name": "Max", "email": "max@dave.com", "password": "max"}
 
 ###
 
 PUT {{baseURL}}user/2/
 Content-Type: application/json
+Authorization: {{authToken}}
+X-CSRFToken: {{CSRFToken}}
 
-{"is_staff": true, "is_admin": false}
+{"name": "Nor4man"}
 
 ###
 
-DELETE  {{baseURL}}user/1/
+DELETE  {{baseURL}}user/6/
 Content-Type: application/json
+Authorization: {{authToken}}
+X-CSRFToken: {{CSRFToken}}
 
 {}
 
