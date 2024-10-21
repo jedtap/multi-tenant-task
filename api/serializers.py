@@ -7,9 +7,11 @@ class TenantSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 class UserSerializer(serializers.ModelSerializer):
+    username = serializers.CharField(required=False)
+
     class Meta:
         model = CustomUser
-        fields = ['id', 'name', 'email', 'password', 'is_staff', 'is_admin', 'tenant']
+        fields = ['id', 'name', 'email', 'password', 'is_staff', 'is_admin', 'tenant', 'username']
 
 class ProjectSerializer(serializers.ModelSerializer):
     class Meta:

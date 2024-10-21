@@ -27,7 +27,7 @@ from .serializers import TenantSerializer, UserSerializer, ProjectSerializer, Ta
 def login(request):
     email = request.data.get('email')
     password = request.data.get('password')
-    user = authenticate(email=email, password=password)
+    user = authenticate(username=email, password=password)
 
     if user:
         token, created = Token.objects.get_or_create(user=user)
@@ -50,12 +50,17 @@ def logout(request):
 
 # Function base view for Tenant model
 @api_view(['POST'])
+@authentication_classes([SessionAuthentication, TokenAuthentication])
+@permission_classes([IsAuthenticated, IsAdminUser])
 def create_tenant(request):
-    serializer = TenantSerializer(data=request.data)
-    if serializer.is_valid():
-        serializer.save()
-        return Response(serializer.data, status=status.HTTP_201_CREATED) 
-    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    if request.user.is_admin:
+        serializer = TenantSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED) 
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    else:
+        return Response({"error": "oops, your not an admin to see this"}, status=status.HTTP_401_UNAUTHORIZED)
 
 @api_view(['GET'])
 @authentication_classes([SessionAuthentication, TokenAuthentication])
@@ -69,18 +74,28 @@ def view_tenants(request):
         return Response({"error": "oops, your not an admin to see this"}, status=status.HTTP_401_UNAUTHORIZED)
 
 @api_view(['PUT'])
+@authentication_classes([SessionAuthentication, TokenAuthentication])
+@permission_classes([IsAuthenticated, IsAdminUser])
 def edit_tenant(request, pk):
-    tenant = Tenant.objects.get(pk=pk)
-    serializer = TenantSerializer(tenant, data=request.data, partial=True)
-    if serializer.is_valid():
-        serializer.save()
-    return Response(serializer.data)
+    if request.user.is_admin:
+        tenant = Tenant.objects.get(pk=pk)
+        serializer = TenantSerializer(tenant, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+        return Response(serializer.data)
+    else:
+        return Response({"error": "oops, your not an admin to see this"}, status=status.HTTP_401_UNAUTHORIZED)
 
 @api_view(['DELETE'])
+@authentication_classes([SessionAuthentication, TokenAuthentication])
+@permission_classes([IsAuthenticated, IsAdminUser])
 def delete_tenant(request, pk):
-    tenant = Tenant.objects.get(pk=pk)
-    tenant.delete()
-    return Response({'message': 'Tenant was deleted'})
+    if request.user.is_admin:
+        tenant = Tenant.objects.get(pk=pk)
+        tenant.delete()
+        return Response({'message': 'Tenant was deleted'})
+    else:
+        return Response({"error": "oops, your not an admin to see this"}, status=status.HTTP_401_UNAUTHORIZED)
 
 
 # Class based view for User model
@@ -108,7 +123,7 @@ class UserListCreateView(APIView):
                 if tenant_serializer.is_valid():
                     tenant = tenant_serializer.save()
 
-            user_serializer.save(tenant=tenant)
+            user_serializer.save(tenant=tenant, username=email)
             return Response(user_serializer.data, status=status.HTTP_201_CREATED)
         return Response(user_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 

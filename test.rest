@@ -1,46 +1,73 @@
-# *** LOGIN and LOGTOUT ***********************************************
-POST http://127.0.0.1:8000/login/ 
-Content-Type: application/json
+# Admin 1: 
+# { "email": "jed@jed.com", "password": "MagicPassword1234!"}
 
-{ "email": "hello@jed.com", "password": "MagicPassword1234!"}
+# Staff 2:
+# {"email": "clear@dave.com", "password": "CleanTables1234!"}
+
+
+# Regular User 3:
+# {"email": "johndoe@company.com", "password": "I Love Burgers!"}
+
+
+###
+@email = "johndoe@company.com"
+@password = "I Love Burgers!"
+# @authToken = a0e3c7b10fc3a0a10145a4a1eafc65c3b0611fe6
+@authToken = {{login.response.headers.X-AuthToken}}
+@CSRFToken = jlJK6Po9187Bwxd005helvpYbkmAZr04IEQCcsUhpwmFiI4zbXT7pHhAu2X79aoM
+@baseURL = http://127.0.0.1:8000/
 
 ###
 
-POST http://127.0.0.1:8000/logout/ 
+# *** LOGIN and LOGTOUT ***********************************************
+POST {{baseURL}}login/ 
 Content-Type: application/json
-Authorization: Token abcd
-X-CSRFToken: abcd
+
+{"email": {{email}}, "password": {{password}}}
+
+###
+
+POST {{baseURL}}logout/ 
+Content-Type: application/json
+Authorization: {{authToken}}
+X-CSRFToken: {{CSRFToken}}
 
 {}
 
 ###
 
 # *** CRUD capabilities for Tenant ***********************************************
-GET http://127.0.0.1:8000/tenants/ 
+GET {{baseURL}}tenants/ 
 Content-Type: application/json
-Authorization: Token abcd
-X-CSRFToken: abcd
+Authorization: {{authToken}}
+X-CSRFToken: {{CSRFToken}}
 
 {}
 
 ###
 
-POST http://127.0.0.1:8000/tenant/new/
+POST {{baseURL}}tenant/new/
 Content-Type: application/json
+Authorization: {{authToken}}
+X-CSRFToken: {{CSRFToken}}
 
 { "name": "boom.com" }
 
 ###
 
-PUT http://127.0.0.1:8000/tenant/2/ 
+PUT {{baseURL}}tenant/5/ 
 Content-Type: application/json
+Authorization: {{authToken}}
+X-CSRFToken: {{CSRFToken}}
 
 {"name": "bob.com"}
 
 ###
 
-DELETE http://127.0.0.1:8000/tenant/delete/1/ 
+DELETE {{baseURL}}tenant/delete/5/ 
 Content-Type: application/json
+Authorization: {{authToken}}
+X-CSRFToken: {{CSRFToken}}
 
 {}
 
@@ -48,28 +75,28 @@ Content-Type: application/json
 
 
 # *** CRUD capabilities for User ***********************************************
-GET http://127.0.0.1:8000/users/ 
+GET {{baseURL}}users/ 
 Content-Type: application/json
 
 {}
 
 ###
 
-POST http://127.0.0.1:8000/users/
+POST {{baseURL}}users/
 Content-Type: application/json
 
-{"name": "Mister Jed", "email": "hello@jed.com", "password": "MagicPassword1234!"}
+{"name": "test", "email": "test@test.com", "password": "test"}
 
 ###
 
-PUT http://127.0.0.1:8000/user/2/
+PUT {{baseURL}}user/2/
 Content-Type: application/json
 
-{"is_admin": true}
+{"is_staff": true, "is_admin": false}
 
 ###
 
-DELETE  http://127.0.0.1:8000/user/1/
+DELETE  {{baseURL}}user/1/
 Content-Type: application/json
 
 {}
@@ -78,28 +105,28 @@ Content-Type: application/json
 
 
 # *** CRUD capabilities for Project ***********************************************
-GET http://127.0.0.1:8000/projects/ 
+GET {{baseURL}}projects/ 
 Content-Type: application/json
 
 {}
 
 ###
 
-POST http://127.0.0.1:8000/projects/
+POST {{baseURL}}projects/
 Content-Type: application/json
 
 { "tenant": 2, "users": [2], "name": "Launch New Business" }
 
 ###
 
-PATCH http://127.0.0.1:8000/project/1/
+PATCH {{baseURL}}project/1/
 Content-Type: application/json
 
 { "name": "Artwork" }
 
 ###
 
-DELETE http://127.0.0.1:8000/project/1/
+DELETE {{baseURL}}project/1/
 Content-Type: application/json
 
 {}
@@ -107,14 +134,14 @@ Content-Type: application/json
 ###
 
 # *** CRUD capabilities for Task ***********************************************
-GET http://127.0.0.1:8000/tasks/
+GET {{baseURL}}tasks/
 Content-Type: application/json
 
 {}
 
 ###
 
-POST http://127.0.0.1:8000/tasks/
+POST {{baseURL}}tasks/
 Content-Type: application/json
 
 {
@@ -128,7 +155,7 @@ Content-Type: application/json
 ###
 
 
-PATCH http://127.0.0.1:8000/tasks/1/
+PATCH {{baseURL}}tasks/1/
 Content-Type: application/json
 
 {
@@ -139,7 +166,7 @@ Content-Type: application/json
 ###
 
 
-DELETE http://127.0.0.1:8000/tasks/1/
+DELETE {{baseURL}}tasks/1/
 Content-Type: application/json
 
 {}

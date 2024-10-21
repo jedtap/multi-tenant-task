@@ -73,7 +73,7 @@ DATABASES = {
 
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'multitenant3',
+        'NAME': 'multitenant2',
         'USER': 'jed',
         'PASSWORD': 'jed',
         'HOST': 'localhost',
