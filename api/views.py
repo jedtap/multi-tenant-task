@@ -17,6 +17,7 @@ from rest_framework.authtoken.models import Token
 from rest_framework.authentication import SessionAuthentication, TokenAuthentication
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from rest_framework.decorators import authentication_classes, permission_classes
+from rest_framework.permissions import BasePermission
 
 from core.models import Tenant, CustomUser, Project, Task
 from .serializers import TenantSerializer, UserSerializer, ProjectSerializer, TaskSerializer
@@ -181,15 +182,56 @@ class UserUpdateDeleteView(APIView):
         return Response({'message': 'User was deleted'})
 
 
+# Custom Permissions
+class IsTenant(BasePermission):
+    def has_object_permission(self, request, view, obj):
+        return request.user.tenant == obj.tenant
+    
+class IsStaff(BasePermission):
+    def has_object_permission(self, request, view, obj):
+        return request.user.is_staff
+    
+class IsPartOfProject(BasePermission):
+    def has_object_permission(self, request, view, obj):
+        return request.user in obj.users.all()
+
+
 # Generic API view for Project model
 class ProjectListCreateView(ListCreateAPIView):
-	queryset = Project.objects.all()
-	serializer_class = ProjectSerializer
+    serializer_class = ProjectSerializer
+    authentication_classes = [SessionAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated, IsTenant]
+
+    def get_queryset(self):
+        return Project.objects.filter(tenant=self.request.user.tenant)
+
+    def perform_create(self, serializer):
+        tenant = self.request.user.tenant
+        user = self.request.user
+        project = serializer.save(tenant=tenant)
+        project.users.add(user)
 
 class ProjectRetrieveUpdateDestroyView(RetrieveUpdateDestroyAPIView):
     queryset = Project.objects.all()
     serializer_class = ProjectSerializer
+    authentication_classes = [SessionAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated, IsTenant, IsPartOfProject]
 
+    def update(self, request, *args, **kwargs):
+        partial = kwargs.pop('partial', False)
+        instance = self.get_object()
+        data = request.data
+
+        if 'users' in data:
+            new_users = data['users']
+            for user_id in new_users:
+                if not instance.users.filter(id=user_id).exists():
+                    instance.users.add(user_id)
+
+        serializer = self.get_serializer(instance, data=request.data, partial=partial)
+        serializer.is_valid(raise_exception=True)
+        self.perform_update(serializer)
+        return Response(serializer.data)
 
 # View set for Task model
 class TaskViewSet(viewsets.ModelViewSet):

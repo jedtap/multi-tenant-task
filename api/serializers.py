@@ -17,6 +17,7 @@ class ProjectSerializer(serializers.ModelSerializer):
     class Meta:
         model = Project
         fields = '__all__'
+        read_only_fields = ['tenant', 'users']
 
 class TaskSerializer(serializers.ModelSerializer):
     class Meta:

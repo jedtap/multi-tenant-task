@@ -4,16 +4,18 @@
 # Staff 2:
 # {"email": "clear@dave.com", "password": "CleanTables1234!"}
 
+# Staff 8:
+# {"email": "boy@dave.com", "password": "CleanFloors!"}
 
 # Regular User 3:
 # {"email": "johndoe@company.com", "password": "I Love Burgers!"}
 
 
 ###
-@email = "clear@dave.com"
-@password = "CleanTables1234!"
+@email = "boy@dave.com"
+@password = "CleanFloors!"
 @authToken = {{login.response.headers.X-AuthToken}}
-@CSRFToken = abcde
+@CSRFToken = dbMpY936qpNErmFvRTubInkkHJ6XpA5BU44IiBNlHm1TbikKOXSPlKZ0ROEJvTdf
 @baseURL = http://127.0.0.1:8000/
 
 ###
@@ -88,7 +90,7 @@ Content-Type: application/json
 Authorization: {{authToken}}
 X-CSRFToken: {{CSRFToken}}
 
-{"name": "Max", "email": "max@dave.com", "password": "max"}
+{"name": "Boy", "email": "boy@dave.com", "password": "CleanFloors!"}
 
 ###
 
@@ -114,6 +116,8 @@ X-CSRFToken: {{CSRFToken}}
 # *** CRUD capabilities for Project ***********************************************
 GET {{baseURL}}projects/ 
 Content-Type: application/json
+Authorization: {{authToken}}
+X-CSRFToken: {{CSRFToken}}
 
 {}
 
@@ -121,20 +125,26 @@ Content-Type: application/json
 
 POST {{baseURL}}projects/
 Content-Type: application/json
+Authorization: {{authToken}}
+X-CSRFToken: {{CSRFToken}}
 
-{ "tenant": 2, "users": [2], "name": "Launch New Business" }
-
-###
-
-PATCH {{baseURL}}project/1/
-Content-Type: application/json
-
-{ "name": "Artwork" }
+{ "name": "Project Clean Up at the South" }
 
 ###
 
-DELETE {{baseURL}}project/1/
+PATCH {{baseURL}}project/7/
 Content-Type: application/json
+Authorization: {{authToken}}
+X-CSRFToken: {{CSRFToken}}
+
+{ "users": [8] }
+
+###
+
+DELETE {{baseURL}}project/7/
+Content-Type: application/json
+Authorization: {{authToken}}
+X-CSRFToken: {{CSRFToken}}
 
 {}
 
