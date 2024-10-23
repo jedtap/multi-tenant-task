@@ -1,26 +1,33 @@
-# Admin 1: 
+# *** LIST OF ACCOUNTS  **********************************************************
+
+# Starting Admin (User #1): 
 # { "email": "jed@jed.com", "password": "MagicPassword1234!"}
 
-# Staff 2:
+# Admin (User #):
+# { "email": "jed@jed.com", "password": "MagicPassword1234!"}
+
+# Staff (User #2):
 # {"email": "clear@dave.com", "password": "CleanTables1234!"}
 
-# Staff 8:
+# Staff (User #8):
 # {"email": "boy@dave.com", "password": "CleanFloors!"}
 
-# Regular User 3:
+# Employee (User #3):
 # {"email": "johndoe@company.com", "password": "I Love Burgers!"}
-
-
 ###
-@email = "boy@dave.com"
-@password = "CleanFloors!"
+@email = "jed@jed.com"
+@password = "MagicPassword1234!"
 @authToken = {{login.response.headers.X-AuthToken}}
 @CSRFToken = abcde
 @baseURL = http://127.0.0.1:8000/
 
 ###
 
-# *** LOGIN and LOGTOUT ***********************************************
+
+
+
+
+# *** LOGIN and LOGOUT **********************************************************
 POST {{baseURL}}login/ 
 Content-Type: application/json
 
@@ -37,7 +44,11 @@ X-CSRFToken: {{CSRFToken}}
 
 ###
 
-# *** CRUD capabilities for Tenant ***********************************************
+
+
+
+
+# *** CRUD capabilities for Tenant **********************************************
 GET {{baseURL}}tenants/ 
 Content-Type: application/json
 Authorization: {{authToken}}
@@ -75,6 +86,9 @@ X-CSRFToken: {{CSRFToken}}
 ###
 
 
+
+
+
 # *** CRUD capabilities for User ***********************************************
 GET {{baseURL}}users/ 
 Content-Type: application/json
@@ -90,16 +104,16 @@ Content-Type: application/json
 Authorization: {{authToken}}
 X-CSRFToken: {{CSRFToken}}
 
-{"name": "Boy", "email": "boy@dave.com", "password": "CleanFloors!"}
+{"name": "HR Jennifer", "email": "jennifer@hr.com", "password": "MyNameIsJennifer1234!"}
 
 ###
 
-PUT {{baseURL}}user/2/
+PUT {{baseURL}}user/9/
 Content-Type: application/json
 Authorization: {{authToken}}
 X-CSRFToken: {{CSRFToken}}
 
-{"name": "Nor4man"}
+{"is_staff": true }
 
 ###
 
@@ -113,7 +127,11 @@ X-CSRFToken: {{CSRFToken}}
 ###
 
 
-# *** CRUD capabilities for Project ***********************************************
+
+
+
+
+# *** CRUD capabilities for Project *********************************************
 GET {{baseURL}}projects/ 
 Content-Type: application/json
 Authorization: {{authToken}}
@@ -128,7 +146,7 @@ Content-Type: application/json
 Authorization: {{authToken}}
 X-CSRFToken: {{CSRFToken}}
 
-{ "name": "Project Clean Up at the South" }
+{ "name": "Art Bash 2024" }
 
 ###
 
@@ -150,7 +168,11 @@ X-CSRFToken: {{CSRFToken}}
 
 ###
 
-# *** CRUD capabilities for Task ***********************************************
+
+
+
+
+# *** CRUD capabilities for Task **********************************************
 GET {{baseURL}}tasks/
 Content-Type: application/json
 Authorization: {{authToken}}
@@ -166,7 +188,7 @@ Authorization: {{authToken}}
 X-CSRFToken: {{CSRFToken}}
 
 {
-    "project": 8,
+    "project": 9,
     "title": "Jump ball",
     "description": "Loreum Ipusm"
 }

@@ -1,0 +1,356 @@
+#  Test Account (id#9)
+###
+@email = "jennifer@hr.com"
+
+@password = "MyNameIsJennifer1234!"
+
+@authToken = {{login.response.headers.X-AuthToken}}
+@CSRFToken = abcde
+@baseURL = http://127.0.0.1:8000/
+
+
+
+# Log-in as Jennifer (Staff level)
+###
+POST {{baseURL}}login/ 
+Content-Type: application/json
+
+{"email": {{email}}, "password": {{password}}}
+
+
+
+# Create a new employee: Bob
+###
+POST {{baseURL}}users/
+Content-Type: application/json
+Authorization: {{authToken}}
+X-CSRFToken: {{CSRFToken}}
+
+{
+    "name": "Bob",
+    "email": "bob@hr.com",
+    "password": "MyNameIsJennifer1234!"
+}
+
+
+
+# Get a list of employees
+###
+GET {{baseURL}}users/ 
+Content-Type: application/json
+Authorization: {{authToken}}
+X-CSRFToken: {{CSRFToken}}
+
+{}
+
+
+
+# Change employee details (Bob and herself)
+###
+PUT {{baseURL}}user//
+Content-Type: application/json
+Authorization: {{authToken}}
+X-CSRFToken: {{CSRFToken}}
+
+{"name": "Bobby Joe" }
+
+
+
+# Delete employee record
+###
+DELETE  {{baseURL}}user/6/
+Content-Type: application/json
+Authorization: {{authToken}}
+X-CSRFToken: {{CSRFToken}}
+
+{}
+
+
+
+# Log-out Jennifer
+###
+POST {{baseURL}}logout/ 
+Content-Type: application/json
+Authorization: {{authToken}}
+X-CSRFToken: {{CSRFToken}}
+
+{}
+
+###
+
+
+
+
+
+
+# Log-in as Bob the employee
+###
+POST {{baseURL}}login/ 
+Content-Type: application/json
+
+{"email": {{email}}, "password": {{password}}}
+
+
+
+# Bob to create a new employee
+###
+POST {{baseURL}}users/
+Content-Type: application/json
+Authorization: {{authToken}}
+X-CSRFToken: {{CSRFToken}}
+
+{
+    "name": "Evil Competitor",
+    "email": "hacker@doom.com",
+    "password": "Invade Website Bwahahaha"
+}
+
+
+
+# Get a list of employees
+###
+GET {{baseURL}}users/ 
+Content-Type: application/json
+Authorization: {{authToken}}
+X-CSRFToken: {{CSRFToken}}
+
+{}
+
+
+
+# Change employee details
+###
+PUT {{baseURL}}user//
+Content-Type: application/json
+Authorization: {{authToken}}
+X-CSRFToken: {{CSRFToken}}
+
+{"name": "Bobby Marx" }
+
+
+
+# Delete employee record
+###
+DELETE  {{baseURL}}user//
+Content-Type: application/json
+Authorization: {{authToken}}
+X-CSRFToken: {{CSRFToken}}
+
+{}
+
+
+
+# Log-out Bob
+###
+POST {{baseURL}}logout/ 
+Content-Type: application/json
+Authorization: {{authToken}}
+X-CSRFToken: {{CSRFToken}}
+
+{}
+
+###
+
+
+
+
+
+
+
+
+
+# Log-in as Jennifer (Staff level)
+###
+POST {{baseURL}}login/ 
+Content-Type: application/json
+
+{"email": {{email}}, "password": {{password}}}
+
+
+# Create 3 new projects
+###
+POST {{baseURL}}projects/
+Content-Type: application/json
+Authorization: {{authToken}}
+X-CSRFToken: {{CSRFToken}}
+
+{ "name": "Team building retreat" }
+
+###
+POST {{baseURL}}projects/
+Content-Type: application/json
+Authorization: {{authToken}}
+X-CSRFToken: {{CSRFToken}}
+
+{ "name": "Outreach program" }
+
+###
+POST {{baseURL}}projects/
+Content-Type: application/json
+Authorization: {{authToken}}
+X-CSRFToken: {{CSRFToken}}
+
+{ "name": "Coastal cleanup" }
+
+
+
+# List down all projects
+###
+GET {{baseURL}}projects/ 
+Content-Type: application/json
+Authorization: {{authToken}}
+X-CSRFToken: {{CSRFToken}}
+
+{}
+
+###
+
+
+# Update project details
+###
+PATCH {{baseURL}}project//
+Content-Type: application/json
+Authorization: {{authToken}}
+X-CSRFToken: {{CSRFToken}}
+
+{ "name": "Fun Run 2024" }
+
+
+
+# Add Bob to a Project
+###
+PATCH {{baseURL}}project//
+Content-Type: application/json
+Authorization: {{authToken}}
+X-CSRFToken: {{CSRFToken}}
+
+{ "users": [] }
+
+
+
+# Delete a project
+###
+DELETE {{baseURL}}project//
+Content-Type: application/json
+Authorization: {{authToken}}
+X-CSRFToken: {{CSRFToken}}
+
+{}
+
+###
+
+
+
+# Log-out Jennifer
+###
+POST {{baseURL}}logout/ 
+Content-Type: application/json
+Authorization: {{authToken}}
+X-CSRFToken: {{CSRFToken}}
+
+{}
+
+###
+
+
+
+
+
+
+# Log-in as Employee
+###
+POST {{baseURL}}login/ 
+Content-Type: application/json
+
+{"email": {{email}}, "password": {{password}}}
+
+
+
+# Update project details
+###
+PATCH {{baseURL}}project//
+Content-Type: application/json
+Authorization: {{authToken}}
+X-CSRFToken: {{CSRFToken}}
+
+{ "name": "Pizza Party" }
+
+
+
+# Delete a project
+###
+DELETE {{baseURL}}project//
+Content-Type: application/json
+Authorization: {{authToken}}
+X-CSRFToken: {{CSRFToken}}
+
+{}
+
+
+# Log-out Bob
+###
+POST {{baseURL}}logout/ 
+Content-Type: application/json
+Authorization: {{authToken}}
+X-CSRFToken: {{CSRFToken}}
+
+{}
+
+###
+
+
+
+
+# Log In from a different Tenant
+# email: jed@jed.com
+# password: MagicPassword1234!
+
+# Log-in as Employee
+###
+POST {{baseURL}}login/ 
+Content-Type: application/json
+
+{"email": {{email}}, "password": {{password}}}
+
+
+# Can I see HR projects?
+###
+POST {{baseURL}}login/ 
+Content-Type: application/json
+
+{"email": {{email}}, "password": {{password}}}
+
+
+
+# Log-out external person
+###
+POST {{baseURL}}logout/ 
+Content-Type: application/json
+Authorization: {{authToken}}
+X-CSRFToken: {{CSRFToken}}
+
+
+
+
+# Can I do any task as a person who is 
+# anonymous or logged out?
+
+# Delete a project and Changing user details
+###
+DELETE {{baseURL}}project/3/
+Content-Type: application/json
+Authorization: {{authToken}}
+X-CSRFToken: {{CSRFToken}}
+
+{}
+
+# Change employee details
+###
+PUT {{baseURL}}user/3/
+Content-Type: application/json
+Authorization: {{authToken}}
+X-CSRFToken: {{CSRFToken}}
+
+{"name": "I am not bobby" }
+
+###
