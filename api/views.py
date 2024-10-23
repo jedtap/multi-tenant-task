@@ -195,6 +195,11 @@ class IsPartOfProject(BasePermission):
     def has_object_permission(self, request, view, obj):
         return request.user in obj.users.all()
 
+class IsPartOfTask(BasePermission):
+    def has_object_permission(self, request, view, obj):
+        project = obj.project
+        return request.user in project.users.all()
+
 
 # Generic API view for Project model
 class ProjectListCreateView(ListCreateAPIView):
@@ -235,5 +240,14 @@ class ProjectRetrieveUpdateDestroyView(RetrieveUpdateDestroyAPIView):
 
 # View set for Task model
 class TaskViewSet(viewsets.ModelViewSet):
-	queryset = Task.objects.all()
-	serializer_class = TaskSerializer
+    queryset = Task.objects.all()
+    serializer_class = TaskSerializer
+    authentication_classes = [SessionAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated, IsTenant, IsPartOfTask]
+
+    def get_queryset(self):
+        return Task.objects.filter(tenant=self.request.user.tenant)
+
+    def perform_create(self, serializer):
+        tenant = self.request.user.tenant
+        serializer.save(tenant=tenant)

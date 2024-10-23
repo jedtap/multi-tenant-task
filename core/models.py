@@ -37,7 +37,6 @@ def validate_file_extension(value):
 
 class Task(models.Model):
     tenant = models.ForeignKey(Tenant, on_delete=models.CASCADE)
-    users = models.ManyToManyField(CustomUser)
     project = models.ForeignKey(Project, on_delete=models.CASCADE)
     
     title = models.CharField(max_length=255)

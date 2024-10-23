@@ -15,7 +15,7 @@
 @email = "boy@dave.com"
 @password = "CleanFloors!"
 @authToken = {{login.response.headers.X-AuthToken}}
-@CSRFToken = dbMpY936qpNErmFvRTubInkkHJ6XpA5BU44IiBNlHm1TbikKOXSPlKZ0ROEJvTdf
+@CSRFToken = abcde
 @baseURL = http://127.0.0.1:8000/
 
 ###
@@ -153,6 +153,8 @@ X-CSRFToken: {{CSRFToken}}
 # *** CRUD capabilities for Task ***********************************************
 GET {{baseURL}}tasks/
 Content-Type: application/json
+Authorization: {{authToken}}
+X-CSRFToken: {{CSRFToken}}
 
 {}
 
@@ -160,31 +162,35 @@ Content-Type: application/json
 
 POST {{baseURL}}tasks/
 Content-Type: application/json
+Authorization: {{authToken}}
+X-CSRFToken: {{CSRFToken}}
 
 {
-    "tenant": 2,
-    "users": [2],
-    "project": 2,
-    "title": "Market research",
+    "project": 8,
+    "title": "Jump ball",
     "description": "Loreum Ipusm"
 }
 
 ###
 
 
-PATCH {{baseURL}}tasks/1/
+PATCH {{baseURL}}tasks/3/
 Content-Type: application/json
+Authorization: {{authToken}}
+X-CSRFToken: {{CSRFToken}}
 
 {
-    "title": "RACI matrix",
+    "title": "swimming",
     "description": "Loreum Ipusm Loreum Ipusm"
 }
 
 ###
 
 
-DELETE {{baseURL}}tasks/1/
+DELETE {{baseURL}}tasks/3/
 Content-Type: application/json
+Authorization: {{authToken}}
+X-CSRFToken: {{CSRFToken}}
 
 {}
 
