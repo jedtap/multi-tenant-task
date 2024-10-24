@@ -3,12 +3,12 @@
 # Password: MyNameIsJennifer1234!
 
 ###
-@email = "jennifer@hr.com"
+@email = "jed@jed.com"
 
-@password = "MyNameIsJennifer1234!"
+@password = "MagicPassword1234!"
 
 @authToken = {{login.response.headers.X-AuthToken}}
-@CSRFToken = abcde
+@CSRFToken = Re8xODsmsNoCtiwKKPDS0hynzEnv2108hFayf7PyBXUkazIfdC9iWzwobAR3R8fK
 @baseURL = http://127.0.0.1:8000/
 
 
@@ -50,18 +50,18 @@ X-CSRFToken: {{CSRFToken}}
 
 # Change employee details (Bob and herself)
 ###
-PUT {{baseURL}}user//
+PUT {{baseURL}}user/9/
 Content-Type: application/json
 Authorization: {{authToken}}
 X-CSRFToken: {{CSRFToken}}
 
-{"name": "Bobby Joe" }
+{"name": "Jennifer Mendoza" }
 
 
 
 # Delete employee record
 ###
-DELETE  {{baseURL}}user/6/
+DELETE  {{baseURL}}user/9/
 Content-Type: application/json
 Authorization: {{authToken}}
 X-CSRFToken: {{CSRFToken}}
@@ -123,7 +123,7 @@ X-CSRFToken: {{CSRFToken}}
 
 # Change employee details
 ###
-PUT {{baseURL}}user//
+PUT {{baseURL}}user/10/
 Content-Type: application/json
 Authorization: {{authToken}}
 X-CSRFToken: {{CSRFToken}}
@@ -134,7 +134,7 @@ X-CSRFToken: {{CSRFToken}}
 
 # Delete employee record
 ###
-DELETE  {{baseURL}}user//
+DELETE  {{baseURL}}user/10/
 Content-Type: application/json
 Authorization: {{authToken}}
 X-CSRFToken: {{CSRFToken}}
@@ -211,7 +211,7 @@ X-CSRFToken: {{CSRFToken}}
 
 # Update project details
 ###
-PATCH {{baseURL}}project//
+PATCH {{baseURL}}project/13/
 Content-Type: application/json
 Authorization: {{authToken}}
 X-CSRFToken: {{CSRFToken}}
@@ -222,18 +222,18 @@ X-CSRFToken: {{CSRFToken}}
 
 # Add Bob to a Project
 ###
-PATCH {{baseURL}}project//
+PATCH {{baseURL}}project/13/
 Content-Type: application/json
 Authorization: {{authToken}}
 X-CSRFToken: {{CSRFToken}}
 
-{ "users": [] }
+{ "users": [10] }
 
 
 
 # Delete a project
 ###
-DELETE {{baseURL}}project//
+DELETE {{baseURL}}project/11/
 Content-Type: application/json
 Authorization: {{authToken}}
 X-CSRFToken: {{CSRFToken}}
@@ -271,18 +271,18 @@ Content-Type: application/json
 
 # Update project details
 ###
-PATCH {{baseURL}}project//
+PATCH {{baseURL}}project/13/
 Content-Type: application/json
 Authorization: {{authToken}}
 X-CSRFToken: {{CSRFToken}}
 
-{ "name": "Pizza Party" }
+{ "name": "Fun Run at Circle Makati" }
 
 
 
 # Delete a project
 ###
-DELETE {{baseURL}}project//
+DELETE {{baseURL}}project/13/
 Content-Type: application/json
 Authorization: {{authToken}}
 X-CSRFToken: {{CSRFToken}}
@@ -341,7 +341,7 @@ X-CSRFToken: {{CSRFToken}}
 
 # Delete a project and Changing user details
 ###
-DELETE {{baseURL}}project/3/
+DELETE {{baseURL}}project/12/
 Content-Type: application/json
 Authorization: {{authToken}}
 X-CSRFToken: {{CSRFToken}}
