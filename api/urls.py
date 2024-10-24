@@ -4,6 +4,9 @@ from . import views
 from rest_framework import routers
 from django.urls import include
 
+from rest_framework.schemas import get_schema_view
+from django.views.generic.base import TemplateView
+
 router = routers.DefaultRouter()
 router.register(r'tasks', views.TaskViewSet)
 
@@ -23,4 +26,15 @@ urlpatterns = [
 
     path('login/', views.login),
     path('logout/', views.logout),
+
+    path(r'openapi-schema', get_schema_view(
+        title="Project and Task App",
+        description="A multitenant application to track projects and tasks",
+        version="1.0.0",
+        public=True,
+        ), name='openapi-schema'),
+    path('docs/', TemplateView.as_view(
+        template_name='core/swagger-ui.html',
+        extra_context={'schema_url': 'openapi-schema'}
+        ), name='swagger-ui'),
 ]
