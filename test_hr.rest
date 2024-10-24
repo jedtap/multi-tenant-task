@@ -1,4 +1,7 @@
-#  Test Account (id#9)
+# Test Account (id#9) staff level
+# Email: jennifer@hr.com
+# Password: MyNameIsJennifer1234!
+
 ###
 @email = "jennifer@hr.com"
 
@@ -29,7 +32,7 @@ X-CSRFToken: {{CSRFToken}}
 {
     "name": "Bob",
     "email": "bob@hr.com",
-    "password": "MyNameIsJennifer1234!"
+    "password": "I Love Burgers #1"
 }
 
 
@@ -315,11 +318,12 @@ Content-Type: application/json
 
 # Can I see HR projects?
 ###
-POST {{baseURL}}login/ 
+GET {{baseURL}}projects/ 
 Content-Type: application/json
+Authorization: {{authToken}}
+X-CSRFToken: {{CSRFToken}}
 
-{"email": {{email}}, "password": {{password}}}
-
+{}
 
 
 # Log-out external person
